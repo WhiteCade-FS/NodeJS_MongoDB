@@ -4,12 +4,13 @@ const authorsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "You are required to have an Author."],
+    unique: [true, "You can only have one author with that name."],
     trim: true,
     maxlength: [50, "Your name is too long."],
   },
   age: {
     type: Number,
-    required: true,
+    required: [true, "You need to give the Author an age."],
   },
   email: {
     type: String,
