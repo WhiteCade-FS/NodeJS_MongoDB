@@ -5,6 +5,7 @@ const videoGamesSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "Please enter a title name."],
+      unique: [true, "You can only have one video game with that name."],
       trim: true,
       maxlength: [50, "Name cannot be longer than 50 characters."],
     },
@@ -22,6 +23,7 @@ const videoGamesSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
+      required: [true, "Please give the game a rating."],
       min: [1, "Rating must be at least 1."],
       max: [10, "Rating must not be more than 10."],
     },

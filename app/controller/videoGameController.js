@@ -33,7 +33,7 @@ const createVideoGame = async (req, res) => {
   try {
     const newVideoGame = await VideoGame.create(videoGame);
     console.log("data >>>", newVideoGame);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: `${req.method} - request to VideoGame endpoint`,
     });
