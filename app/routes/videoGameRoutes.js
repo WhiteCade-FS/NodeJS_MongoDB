@@ -1,16 +1,16 @@
 const router = require("express").Router();
 const {
-  getAllStudios,
-  getStudioById,
-  createStudio,
-  updateStudio,
-  deleteStudio,
-} = require("../controller/studioController.js");
+  getAllVideoGames,
+  getVideoGameById,
+  createVideoGame,
+  updateVideoGame,
+  deleteVideoGame,
+} = require("../controller/videoGameController.js");
 
-router.get("/", getAllStudios);
-router.get("/:id", getStudioById);
-router.post("/", createStudio);
-router.put("/:id", updateStudio);
-router.delete("/:id", deleteStudio);
+router.get("/", getAllVideoGames);
+router.get("/:id", getVideoGameById);
+router.post("/", createVideoGame);
+router.put("/:id", updateVideoGame);
+router.delete("/:id", deleteVideoGame);
 
 module.exports = router;

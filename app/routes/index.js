@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const authorRoutes = require("./studioRoutes");
+const studioRoutes = require("./studioRoutes");
+const videoGameRoutes = require("./videoGameRoutes");
 
 router.get("/", (req, res) => {
   res
@@ -8,6 +9,7 @@ router.get("/", (req, res) => {
     .json({ success: true, message: `${req.method} - Request made` });
 });
 
-router.use("/studios", authorRoutes);
+router.use("/studios", studioRoutes);
+router.use("/videogames", videoGameRoutes);
 
 module.exports = router;

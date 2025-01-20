@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
-const authorsSchema = new mongoose.Schema({
+const studiosSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "You are required to have an Author."],
-    unique: [true, "You can only have one author with that name."],
+    required: [true, "You are required to have a Studio name."],
+    unique: [true, "You can only have one Studio with that name."],
     trim: true,
-    maxlength: [50, "Your name is too long."],
+    maxlength: [50, "Your name cannot be longer than 50 characters."],
   },
-  age: {
-    type: Number,
-    required: [true, "You need to give the Author an age."],
+  location: {
+    type: String,
+    required: [true, "You need to give the Studio a location."],
   },
   email: {
     type: String,
@@ -21,9 +21,9 @@ const authorsSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, "Please add a description."],
+    required: [true, "Please add a description about the Studio."],
     maxlength: [500, "Description cannot be more than 500 characters."],
   },
 });
 
-module.exports = mongoose.model("Author", authorsSchema);
+module.exports = mongoose.model("Studio", studiosSchema);

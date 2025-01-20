@@ -1,29 +1,41 @@
-const Studios = require("../models/Studios");
+const VideoGame = require("../models/VideoGames");
 
-const getAllStudios = async (req, res) => {
-  const studios = await Studios.find({});
+const getAllVideoGames = async (req, res) => {
+  const videoGame = await VideoGame.find({});
   res.status(200).json({
-    data: studios,
+    data: videoGame,
     success: true,
-    message: `${req.method} - request to Studio endpoint`,
+    message: `${req.method} - request to VideoGame endpoint`,
   });
 };
-const getStudioById = (req, res) => {
+const getVideoGameById = async (req, res) => {
   const { id } = req.params;
-  res.status(200).json({
-    id,
-    success: true,
-    message: `${req.method} - request to Studio endpoint`,
-  });
-};
-const createStudio = async (req, res) => {
-  const { studio } = req.body;
   try {
-    const newStudio = await Studios.create(studio);
-    console.log("data >>>", newStudio);
+    const videoGameById = await VideoGame.findById(id);
+    if (!videoGameById) {
+      return res.status(404).json({
+        success: false,
+        message: `${id} not found. Check for typos and try again.`,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `${req.method} - request to VideoGame endpoint`,
+        data: videoGameById,
+      });
+    }
+  } catch (error) {
+    console.error("Could not find Video Game", error);
+  }
+};
+const createVideoGame = async (req, res) => {
+  const { videoGame } = req.body;
+  try {
+    const newVideoGame = await VideoGame.create(videoGame);
+    console.log("data >>>", newVideoGame);
     res.status(200).json({
       success: true,
-      message: `${req.method} - request to Studio endpoint`,
+      message: `${req.method} - request to VideoGame endpoint`,
     });
   } catch (error) {
     if (error.name == "ValidationError") {
@@ -35,28 +47,43 @@ const createStudio = async (req, res) => {
     }
   }
 };
-const updateStudio = async (req, res) => {
+const updateVideoGame = async (req, res) => {
   const { id } = req.params;
-  const studio = await Studios.findByIdAndUpdate(id, req.body, { new: true });
+  const videoGame = await VideoGame.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
   res.status(200).json({
-    data: studio,
+    data: videoGame,
     success: true,
-    message: `${req.method} - request to Studio endpoint`,
+    message: `${req.method} - request to VideoGame endpoint`,
   });
 };
-const deleteStudio = (req, res) => {
+const deleteVideoGame = async (req, res) => {
   const { id } = req.params;
-  res.status(200).json({
-    id,
-    success: true,
-    message: `${req.method} - request to Studio endpoint`,
-  });
+  try {
+    const deletedGame = await VideoGame.findByIdAndDelete(id);
+    if (!deletedGame) {
+      return res.status(404).json({
+        success: false,
+        message: `${id} not found.`,
+      });
+    } else {
+      res.status(200).json({
+        id,
+        success: true,
+        message: `${req.method} - request to VideoGame endpoint`,
+      });
+    }
+  } catch (error) {
+    console.error("Could not find video game.", error);
+    res.status(500).json(error);
+  }
 };
 
 module.exports = {
-  getAllStudios,
-  getStudioById,
-  createStudio,
-  updateStudio,
-  deleteStudio,
+  getAllVideoGames,
+  getVideoGameById,
+  createVideoGame,
+  updateVideoGame,
+  deleteVideoGame,
 };

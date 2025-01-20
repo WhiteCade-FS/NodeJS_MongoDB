@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bookSchema = new mongoose.Schema(
+const videoGamesSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -10,13 +10,13 @@ const bookSchema = new mongoose.Schema(
     },
     genre: {
       type: [String],
-      required: [true, "Please add a genre for the book."],
+      required: [true, "Please add a genre for the game."],
       enum: [
-        "Web Development",
-        "Mobile Development",
-        "UI/UX",
-        "Data Science",
-        "Business",
+        "Action",
+        "Role-Playing",
+        "Adventure",
+        "Arcade",
+        "Strategy",
         "Other",
       ],
     },
@@ -25,12 +25,12 @@ const bookSchema = new mongoose.Schema(
       min: [1, "Rating must be at least 1."],
       max: [10, "Rating must not be more than 10."],
     },
-    author: {
+    studio: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Author",
+      ref: "Studio",
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Book", bookSchema);
+module.exports = mongoose.model("videogames", videoGamesSchema);
