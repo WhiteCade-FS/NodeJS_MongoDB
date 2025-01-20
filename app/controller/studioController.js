@@ -33,9 +33,10 @@ const createStudio = async (req, res) => {
   try {
     const newStudio = await Studios.create(studio);
     console.log("data >>>", newStudio);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: `${req.method} - request to Studio endpoint`,
+      data: newStudio,
     });
   } catch (error) {
     if (error.name == "ValidationError") {

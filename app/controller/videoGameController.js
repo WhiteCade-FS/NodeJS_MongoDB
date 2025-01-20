@@ -36,6 +36,7 @@ const createVideoGame = async (req, res) => {
     res.status(201).json({
       success: true,
       message: `${req.method} - request to VideoGame endpoint`,
+      data: newVideoGame,
     });
   } catch (error) {
     if (error.name == "ValidationError") {
