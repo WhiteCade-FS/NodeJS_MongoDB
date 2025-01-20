@@ -1,0 +1,775 @@
+{
+	"info": {
+		"_postman_id": "82e304d8-6ce1-4539-b684-b7863c8069bd",
+		"name": "Games",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40883533"
+	},
+	"item": [
+		{
+			"name": "VideoGames",
+			"item": [
+				{
+					"name": "All Video Games",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.data).to.be.an(\"array\").that.is.not.empty;",
+									"});",
+									"",
+									"pm.test(\"The response has all properties\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"   data.forEach(item => {",
+									"        pm.expect(item.title).to.be.a(\"string\");",
+									"        pm.expect(item.genre).to.be.an(\"array\").that.is.not.empty;",
+									"        pm.expect(item.rating).to.be.a(\"number\");",
+									"    });",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/videogames/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"videogames",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Video Game by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has all required properties\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"    pm.expect(data).to.have.property(\"_id\").that.is.a(\"string\");",
+									"    pm.expect(data).to.have.property(\"title\").that.is.a(\"string\");",
+									"    pm.expect(data).to.have.property(\"genre\").to.be.an('array').that.is.not.empty;",
+									"    pm.expect(data).to.have.property(\"rating\").that.is.a(\"number\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/videogames/{{videoGameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"videogames",
+								"{{videoGameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Video Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 (Created)\", function(){",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test(\"Response has created an ID\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.data).to.have.property(\"_id\").that.is.not.null;",
+									"    pm.expect(responseBody.data._id).to.have.lengthOf(24);",
+									"",
+									"    pm.collectionVariables.set(\"videoGameId\", responseBody.data._id);",
+									"})",
+									"",
+									"pm.test(\"The response has all properties\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"  pm.expect(data.title).to.be.a(\"string\");",
+									"  pm.expect(data.genre).to.be.a(\"array\").that.is.not.empty;",
+									"  pm.expect(data.rating).to.be.a(\"number\");",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"videoGame\": {\n    \"title\": \"Skyrim\",\n    \"genre\": \"Role-Playing\",\n    \"rating\": 9,\n    \"studio\": \"678d959df9fa4c07866fe0ad\"\n}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/videogames",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"videogames"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update/edit Video Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//The test below is a little bit longer because to check for the updated values I have to store the origianl values into variables to check against.",
+									"//-----------------------------------",
+									"",
+									"let originalTitle;",
+									"let originalGenre;",
+									"let originalRating;",
+									"",
+									"pm.test(\"Store the original values into variables.\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"    originalTitle = data.title; ",
+									"    originalGenre = data.genre;",
+									"    originalRating = data.rating;",
+									"});",
+									"",
+									"pm.test(\"Check the updated against the original\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"",
+									"    if (data.title !== originalTitle) {",
+									"        pm.expect(data.title).to.not.eql(originalTitle);",
+									"    } else {",
+									"         pm.expect(data.title).to.eql(originalTitle);",
+									"    }",
+									"    if (JSON.stringify(data.genre) !== JSON.stringify(originalGenre)) {",
+									"        pm.expect(data.genre).to.not.eql(originalGenre);",
+									"    } else {",
+									"        pm.expect(data.genre).to.eql(originalGenre);",
+									"    }",
+									"    if (data.rating !== originalRating) {",
+									"        pm.expect(data.rating).to.not.eql(originalRating);",
+									"    } else {",
+									"         pm.expect(data.rating).to.eql(originalRating);",
+									"    }",
+									"})",
+									"//-------------------------------------",
+									"// The end of test 2 is above this line",
+									"",
+									"pm.test(\"This is checking against the database to see if the change went through\", async function() {",
+									"    const updatedGameId = pm.environment.get(\"updatedVideoGameId\");",
+									"    const response = await  pm.sendRequest({",
+									"        url: pm.environment.get(\"baseUrl\") + `/api/videoGames/${updatedGameId}`,",
+									"        method: \"GET\"",
+									"    }, function (error, response) {",
+									"        if (error) {",
+									"            console.log(\"Error: \", error);",
+									"            return;",
+									"        }",
+									"    })",
+									"    const body = pm.response.json();",
+									"    const { data } = body;",
+									"    const originalTitle = pm.environment.get(\"originalTitle\");",
+									"    const originalGenre = pm.environment.get(\"originalGenre\")",
+									"    const originalRating = pm.environment.get(\"originalRating\");",
+									"",
+									"    ",
+									"    if (data.title !== originalTitle) {",
+									"        pm.expect(data.title).to.not.eql(originalTitle);",
+									"    } else {",
+									"        pm.expect(data.title).to.eql(originalTitle);",
+									"    }",
+									"     if (JSON.stringify(data.genre) !== JSON.stringify(originalGenre)) {",
+									"        pm.expect(data.genre).to.not.eql(originalGenre);",
+									"    } else {",
+									"        pm.expect(data.genre).to.eql(originalGenre);",
+									"    }",
+									"    if (data.rating !== originalRating) {",
+									"        pm.expect(data.rating).to.not.eql(originalRating);",
+									"    } else {",
+									"        pm.expect(data.rating).to.eql(originalRating);",
+									"    }",
+									"",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"videoGame\": {\n    \"title\": \"Mario-Kart\",\n    \"genre\": \"Action\"\n}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/videogames/{{videoGameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"videogames",
+								"{{videoGameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Video Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response ensures deletion went through\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody).to.have.property(\"success\", true);",
+									"    pm.expect(responseBody).to.have.property(\"message\").that.includes(\"DELETE - request to VideoGame endpoint\");",
+									"})",
+									"",
+									"pm.test(\"Response tries to find ID and returns 404\", async function() {",
+									"    const deletedGame = pm.environment.get(\"deletedVideoGameId\");",
+									"    if (!deletedGame) {",
+									"        console.error(\"Deleted game ID is missing!\");",
+									"        return;",
+									"    }",
+									"    const response = await pm.sendRequest({",
+									"        url: pm.environment.get(\"baseUrl\") + `/api/videoGames/${deletedGame}`,",
+									"        method: \"GET\"",
+									"    });",
+									"    pm.expect(response.status).to.be.eql(404)",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/videogames/{{videoGameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"videogames",
+								"{{videoGameId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Studios",
+			"item": [
+				{
+					"name": "All Studios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.data).to.be.an(\"array\").that.is.not.empty;",
+									"});",
+									"",
+									"pm.test(\"The response has all required properties\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"   data.forEach(item => {",
+									"        pm.expect(item.name).to.be.a(\"string\");",
+									"        pm.expect(item.location).to.be.a(\"string\");",
+									"        pm.expect(item.description).to.be.a(\"string\");",
+									"    });",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/studios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"studios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Studio by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has all required properties\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"    pm.expect(data).to.have.property(\"_id\").that.is.a(\"string\");",
+									"    pm.expect(data).to.have.property(\"name\").that.is.a(\"string\");",
+									"    pm.expect(data).to.have.property(\"location\").to.be.a(\"string\");",
+									"    pm.expect(data).to.have.property(\"description\").that.is.a(\"string\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/studios/{{studioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"studios",
+								"{{studioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Studio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 (Created)\", function(){",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test(\"Response has created an ID\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.data).to.have.property(\"_id\").that.is.not.null;",
+									"    pm.expect(responseBody.data._id).to.have.lengthOf(24);",
+									"",
+									"    pm.collectionVariables.set(\"studioId\", responseBody.data._id);",
+									"})",
+									"",
+									"pm.test(\"The response has all properties\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"  pm.expect(data.name).to.be.a(\"string\");",
+									"  pm.expect(data.location).to.be.a(\"string\");",
+									"  pm.expect(data.description).to.be.a(\"string\");",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"studio\":{\n    \"name\": \"Bethesda Softworks\",\n    \"location\": \"Rockville, MD\",\n    \"email\": \"info@bethsoft.com\",\n    \"description\": \"Bethesda Softworks LLC is an American video game publisher based in Rockville, Maryland. The company was founded by Christopher Weaver in 1986 as a division of Media Technology Limited. \"\n}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/studios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"studios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update/Edit Studio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//The test below is a little bit longer because to check for the updated values I have to store the origianl values into variables to check against.",
+									"//-----------------------------------",
+									"",
+									"let originalName;",
+									"let originalLocation;",
+									"let originalDescription;",
+									"",
+									"pm.test(\"Store the original values into variables.\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"    originalName = data.Name; ",
+									"    originalLocation = data.Location;",
+									"    originalDescription = data.Description;",
+									"});",
+									"",
+									"pm.test(\"Check the updated against the original\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    const { data } = responseBody;",
+									"",
+									"    if (data.name !== originalName) {",
+									"        pm.expect(data.name).to.not.eql(originalName);",
+									"    } else {",
+									"         pm.expect(data.name).to.eql(originalName);",
+									"    }",
+									"    if (data.location !== originalLocation) {",
+									"        pm.expect(data.location).to.not.eql(originalLocation);",
+									"    } else {",
+									"        pm.expect(data.location).to.eql(originalLocation);",
+									"    }",
+									"    if (data.description !== originalDescription) {",
+									"        pm.expect(data.description).to.not.eql(originalDescription);",
+									"    } else {",
+									"         pm.expect(data.description).to.eql(originalDescription);",
+									"    }",
+									"})",
+									"//-------------------------------------",
+									"// The end of test 2 is above this line",
+									"",
+									"pm.test(\"This is checking against the database to see if the change went through\", async function() {",
+									"    const updatedStudioId = pm.environment.get(\"updatedStudioId\");",
+									"    const response = await  pm.sendRequest({",
+									"        url: pm.environment.get(\"baseUrl\") + `/api/videoGames/${updatedStudioId}`,",
+									"        method: \"GET\"",
+									"    }, function (error, response) {",
+									"        if (error) {",
+									"            console.log(\"Error: \", error);",
+									"            return;",
+									"        }",
+									"    })",
+									"    const body = pm.response.json();",
+									"    const { data } = body;",
+									"    const originalName = pm.environment.get(\"originalName\");",
+									"    const originalLocation = pm.environment.get(\"originalLocation\")",
+									"    const originalDescription = pm.environment.get(\"originalDescription\");",
+									"",
+									"    ",
+									"    if (data.name !== originalName) {",
+									"        pm.expect(data.name).to.not.eql(originalName);",
+									"    } else {",
+									"        pm.expect(data.name).to.eql(originalName);",
+									"    }",
+									"     if (data.location !== originalLocation) {",
+									"        pm.expect(data.location).to.not.eql(originalLocation);",
+									"    } else {",
+									"        pm.expect(data.location).to.eql(originalLocation);",
+									"    }",
+									"    if (data.description !== originalDescription) {",
+									"        pm.expect(data.description).to.not.eql(originalDescription);",
+									"    } else {",
+									"        pm.expect(data.description).to.eql(originalDescription);",
+									"    }",
+									"",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"description\": \"Bethesda Game Studios is an American video game developer that creates action role-playing games (RPGs). Some of their best-known games include The Elder Scrolls, Fallout, and Starfield.\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/studios/{{studioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"studios",
+								"{{studioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Studio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response ensures deletion went through\", function() {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody).to.have.property(\"success\", true);",
+									"    pm.expect(responseBody).to.have.property(\"message\").that.includes(\"DELETE - request to Studio endpoint\");",
+									"})",
+									"",
+									"pm.test(\"Response tries to find ID and returns 404\", async function() {",
+									"    const deletedStudio = pm.environment.get(\"deletedStudioId\");",
+									"    if (!deletedStudio) {",
+									"        console.error(\"Deleted studio ID is missing!\");",
+									"        return;",
+									"    }",
+									"    const response = await pm.sendRequest({",
+									"        url: pm.environment.get(\"baseUrl\") + `/api/videoGames/${deletedStudio}`,",
+									"        method: \"GET\"",
+									"    });",
+									"    pm.expect(response.status).to.be.eql(404)",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/studios/{{studioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"studios",
+								"{{studioId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "videoGameId",
+			"value": ""
+		},
+		{
+			"key": "studioId",
+			"value": ""
+		}
+	]
+}
