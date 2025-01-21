@@ -24,6 +24,12 @@ const studiosSchema = new mongoose.Schema({
     required: [true, "Please add a description about the Studio."],
     maxlength: [500, "Description cannot be more than 500 characters."],
   },
+  games: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "videogames",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Studio", studiosSchema);

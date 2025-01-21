@@ -1,4 +1,5 @@
 const VideoGame = require("../models/VideoGames");
+const Studios = require("../models/Studios");
 
 const getAllVideoGames = async (req, res) => {
   const videoGame = await VideoGame.find({});
@@ -31,12 +32,23 @@ const getVideoGameById = async (req, res) => {
 const createVideoGame = async (req, res) => {
   const { videoGame } = req.body;
   try {
-    const newVideoGame = await VideoGame.create(videoGame);
-    console.log("data >>>", newVideoGame);
+    // const newVideoGame = await VideoGame.create(videoGame);
+    const studio = await Studios.findById(videoGame.studio);
+    const videoGameData = new VideoGame(videoGame);
+    studio.games.push(videoGameData._id);
+    const queries = [videoGameData.save(), studio.save()];
+    await Promise.all(queries);
+    const populateGameData = await VideoGame.findById(videoGameData._id)
+      .populate({
+        path: "studio",
+        select: "-__v",
+      })
+      .select("-__v");
+    console.log("data >>>", populateGameData);
     res.status(201).json({
       success: true,
       message: `${req.method} - request to VideoGame endpoint`,
-      data: newVideoGame,
+      data: populateGameData,
     });
   } catch (error) {
     if (error.name == "ValidationError") {
