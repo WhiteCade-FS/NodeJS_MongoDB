@@ -32,7 +32,6 @@ const getVideoGameById = async (req, res) => {
 const createVideoGame = async (req, res) => {
   const { videoGame } = req.body;
   try {
-    // const newVideoGame = await VideoGame.create(videoGame);
     const studio = await Studios.findById(videoGame.studio);
     const videoGameData = new VideoGame(videoGame);
     studio.games.push(videoGameData._id);
